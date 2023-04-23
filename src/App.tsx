@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import HelloPage from "./page/HelloPage";
 import MainPage from "./page/MainPage";
+import Register from "./page/Register";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/hello" element={<HelloPage />} />
         <Route path="/main" element={<MainPage />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );

@@ -39,7 +39,6 @@ const Button2 = styled(Button)`
   align-items: center;
   padding: 8px 20px;
   gap: 10px;
-
   position: static;
   width: 287px;
   height: 88px;
@@ -53,60 +52,6 @@ const Button2 = styled(Button)`
   font-weight: 700;
   font-size: 22px;
   line-height: 20px;
-  /* identical to box height, or 91% */
-
   letter-spacing: -0.01em;
-
   color: #ffffff;
 `;
-
-//     return (
-//         <Container>
-//         <Body className="row-container">
-//             <h1>일정 목록</h1>
-//             <LeftWrapper>
-//             <LocalizationProvider dateAdapter={AdapterDayjs}>
-//                 <DateCalendar/>
-//             </LocalizationProvider>
-//             </LeftWrapper>
-//             <Wrapper className="col-container">
-//                  {/* <TextView>
-//                     <img src={''} width="50%" />
-//                 </TextView>
-//                 <img src={''} width="50%" /> */}
-//             </Wrapper>
-//         </Body>
-//     </Container>
-//     )
-// }
-// export default EventList;
-// const Container = styled(Box)`
-//     background-image: url('bg.png');
-//     background-position: center bottom;
-//     background-repeat: no-repeat;
-//     height: 100vh;
-// `;
-// const TextView = styled(Box)`
-//     h1 {
-//         font-weight: lighter;
-//     }
-//     h2 {
-//         width: 50%;
-//         text-align: right;
-//         color: #45C7FF;
-//     }
-// `;
-// const Body = styled(Box)`
-//     gap: 100px;
-// `;
-// const Wrapper = styled(Box)`
-//     flex: 0.5;
-//     margin-top: 50px;
-// `;
-// const LeftWrapper =styled(Box)`
-//     flex: 0.5;
-//     display: flex;
-//     justify-content: flex-end;
-//     align-self: flex-start;
-//     margin-top: 50px;
-// `;
