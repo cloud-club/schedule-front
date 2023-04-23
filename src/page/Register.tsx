@@ -158,7 +158,6 @@ const Button1 = styled(Button)`
   width: 135px;
   height: 53px;
   top: 634px;
-  background: #3e88eb;
   color: white;
   border-radius: 100px;
   font-family: "Inter";
@@ -171,6 +170,10 @@ const Button1 = styled(Button)`
   letter-spacing: -0.01em;
 
   color: #ffffff;
+  background: #3e88eb;
+  &:hover {
+    background-color: #3e88eb;
+  }
 `;
 
 const TextField2 = styled(TextField)`
