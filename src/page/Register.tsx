@@ -6,6 +6,8 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
+
+
 const currencies = [
   {
     value: "1day",
@@ -29,8 +31,7 @@ const Register = () => {
   return (
     <Container1>
       <Box1>
-        <img></img>
-        {/* <TextView>주시면 알아서 바꿀것</TextView> */}
+        <h2>📆 일정 등록하기</h2>
       </Box1>
       <Box11>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -71,7 +72,6 @@ const Register = () => {
           </BoxForm>
         </Box22>
       </Box11>
-      <Box3>{/* <Button1>일정 추가하기</Button1> */}</Box3>
     </Container1>
   );
 };
@@ -93,7 +93,6 @@ const DateCalendar1 = styled(DateCalendar)`
   filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.08));
   border-radius: 20px;
 `;
-// const TextView = styled(Box)``;
 const Text1 = styled(Box)`
   width: 340px;
   height: 27px;
@@ -117,7 +116,13 @@ const BoxForm = styled(Box)`
   border-radius: 8px;
   padding: 10px;
 `;
-const Box1 = styled(Box)``;
+const Box1 = styled(Box)`
+  position: absolute;
+  left: 31px;
+  top: 33px;
+  margin-top: -24px;
+  margin-left: 5px;
+`;
 const Box11 = styled(Box)`
   display: flex;
   flex-direction: row;
@@ -131,23 +136,6 @@ const Box3 = styled(Box)`
   flex-direction: column;
 `;
 const Button1 = styled(Button)`
-  /* top: 634px;
-  background: #3e88eb;
-  border-radius: 100px;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 20px;
-  gap: 10px;
-  margin-top: 550px;
-  position: static;
-  width: 205px;
-  height: 653px;
-  left: 573px;
-  top: 634px;
-  width: 83px;
-  height: 20px; */
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -165,10 +153,7 @@ const Button1 = styled(Button)`
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
-  /* identical to box height, or 143% */
-
   letter-spacing: -0.01em;
-
   color: #ffffff;
   background: #3e88eb;
   &:hover {

@@ -1,8 +1,13 @@
 import React from "react";
 import main from "../asset/main.png";
 import { Box, Button, styled, Container } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
+  const navigate = useNavigate();
+  function handleClick() {
+    navigate("/register");
+  }
   return (
     <Container1>
       <TextView>
@@ -10,7 +15,9 @@ const MainPage = () => {
         알림을 보내보세요 !
       </TextView>
       <img src={main}></img>
-      <Button2 variant="contained">일정 등록하기</Button2>
+      <Button2 variant="contained" onClick={handleClick}>
+        일정 등록하기
+      </Button2>
     </Container1>
   );
 };
@@ -24,7 +31,6 @@ const Container1 = styled(Container)`
   justify-content: center;
   align-items: center;
 `;
-
 const TextView = styled(Box)`
   margin-top: 100px;
   margin-bottom: 100px;

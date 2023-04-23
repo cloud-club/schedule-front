@@ -1,10 +1,18 @@
 import React from "react";
 import { Box, Button, styled, Container } from "@mui/material";
 import result from "../asset/result.png";
+import { useNavigate } from "react-router-dom";
 
 const ResultPage = () => {
+  const navigate = useNavigate();
+  function handleClick() {
+    navigate("/register");
+  }
   return (
     <Container1>
+      <Box0>
+        <h2>☁️ 일정 등록 완료</h2>
+      </Box0>
       <Box1>
         <img src={result}></img>
         <h2>일정이 성공적으로 등록되었습니다 !</h2>
@@ -24,7 +32,9 @@ const ResultPage = () => {
         </Box23>
       </Box2>
       <Box3>
-        <Button1 variant="contained">일정 추가하기</Button1>
+        <Button1 variant="contained" onClick={handleClick}>
+          일정 추가하기
+        </Button1>
         <Button2>
           슬랙으로
           <br />
@@ -43,6 +53,13 @@ const Container1 = styled(Container)`
   justify-content: center;
   align-items: center;
   margin-top: 100px;
+`;
+const Box0 = styled(Box)`
+  position: absolute;
+  left: 31px;
+  top: 33px;
+  margin-top: -24px;
+  margin-left: 5px;
 `;
 const Box1 = styled(Box)`
   display: flex;
