@@ -8,6 +8,11 @@ const ResultPage = () => {
   function handleClick() {
     navigate("/register");
   }
+  // 슬랙 알람기능
+  function slackAlarm() {
+    navigate("/");
+  }
+
   return (
     <Container1>
       <Box0>
@@ -35,7 +40,7 @@ const ResultPage = () => {
         <Button1 variant="contained" onClick={handleClick}>
           일정 추가하기
         </Button1>
-        <Button2>
+        <Button2 onClick={slackAlarm}>
           슬랙으로
           <br />
           알람 보내기
