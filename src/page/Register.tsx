@@ -1,12 +1,20 @@
 import React from "react";
+import axios from "axios";
 import { Box, Button, styled, Container } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import dayjs, { Dayjs } from "dayjs";
+import { useNavigate } from "react-router";
 
-
+interface Event {
+  title: string;
+  content: string;
+  schedule_date: string;
+  remind_date: number;
+}
 
 const currencies = [
   {
@@ -28,6 +36,40 @@ const currencies = [
 ];
 
 const Register = () => {
+  const initialValue = dayjs(new Date());
+  const [clickedVal, setClickedVal] = React.useState<Dayjs | null>(
+    dayjs(new Date())
+  );
+  const [value, setValue] = React.useState<Dayjs | null>(initialValue);
+  const clickedMonth = Number(clickedVal?.toISOString().slice(5, 7)); //서버에 넘거 줄 값
+  const clickedDay = Number(clickedVal?.toISOString().slice(8, 10)) + 1;
+  const handleMonthChange = (date: Dayjs) => {
+    month = Number(date.toISOString().substring(5, 7)) + 1; // 해당 월을 알려줌
+  };
+  let month: number;
+  const navigate = useNavigate();
+
+  const handleAddEvent = () => {
+    const eventData: Event = {
+      title: "일정 제목",
+      content: "일정 내용",
+      schedule_date: value?.toISOString() || "",
+      remind_date: 1,
+    };
+    axios
+      .post("http://localhost:8080/api/", eventData, {
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        navigate("/result");
+      })
+      .catch((err) => {
+        console.log(err, "일정등록 실패했어여");
+      });
+  };
   return (
     <Container1>
       <Box1>
@@ -35,11 +77,21 @@ const Register = () => {
       </Box1>
       <Box11>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateCalendar1 />
+          <DateCalendar
+            value={value}
+            // loading={isLoading}
+            onMonthChange={handleMonthChange}
+            onChange={(value) => {
+              setValue(value);
+              setClickedVal(value);
+            }}
+          />
         </LocalizationProvider>
-        <Button1>일정 추가하기</Button1>
+        <Button1 type="submit" onClick={handleAddEvent}>
+          일정 추가하기
+        </Button1>
         <Box22>
-          <Text1>오늘의 날짜 :</Text1>
+          <Text1>📍{clickedMonth + "월" + clickedDay + "일 일정이에요"}</Text1>
           <BoxForm
             component="form"
             sx={{
@@ -61,10 +113,10 @@ const Register = () => {
               id="outlined-select-currency"
               select
               label="리마인드"
-              defaultValue="3일전"
+              defaultValue="3day"
             >
               {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
+                <MenuItem key={option.value || ""} value={option.value || ""}>
                   {option.label}
                 </MenuItem>
               ))}
@@ -75,7 +127,6 @@ const Register = () => {
     </Container1>
   );
 };
-
 export default Register;
 
 const Container1 = styled(Container)`
@@ -85,14 +136,7 @@ const Container1 = styled(Container)`
   align-items: center;
   margin-top: 150px;
 `;
-const DateCalendar1 = styled(DateCalendar)`
-  width: 390px;
-  height: 495px;
-  left: 200px;
-  top: 139px;
-  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.08));
-  border-radius: 20px;
-`;
+
 const Text1 = styled(Box)`
   width: 340px;
   height: 27px;
