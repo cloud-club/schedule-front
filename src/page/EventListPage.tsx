@@ -1,11 +1,98 @@
 import {Box, Button, Typography, styled} from '@mui/material'
-// import {LoginMain} from '../../components/Login/LoginMain'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import AlertDialog from '../Components/AlertDialog';
+import dayjs, { Dayjs } from 'dayjs';
+import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
+import React from 'react';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
+import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
+import Badge from '@mui/material/Badge';
+
+const inputVal = {
+    "month" : 2,
+    "day" : 5
+}
+const selectedDateEvent = [
+    {
+        "title": "점심식사 시작",
+        "content": "시작 입니다.",
+        "schedule_date": "2023-04-18",
+        "remind_date": 2,
+        "id": 12
+    },
+    {
+        "title": "클라우드 클럽 모임(3회차)",
+        "content": "시작 입니다.",
+        "schedule_date": "2023-04-18",
+        "remind_date": 2,
+        "id": 2
+    }
+]
+
+const scheduledDate = [
+    {
+        "schedule_date": "2023-04-24"
+    },
+    {
+        "schedule_date": "2023-04-18"
+    }
+]
+function selectedDateFetch(month: number) {
+  return new Promise<{ daysToHighlight: number[] }>((resolve) => {
+    if(Number(scheduledDate[0].schedule_date.substring(5,7)) === month){
+      const daysToHighlight = scheduledDate.map((date) => Number(date.schedule_date.substring(8,10)) ); //25, 18
+      resolve({ daysToHighlight });
+    }
+  });
+}
+
+const initialValue = dayjs(new Date());
+let month : number;
+function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }) {
+  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+    // console.log(highlightedDays)
+  const isSelected =
+    !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) > 0; 
+
+  return (
+    <Badge
+      key={props.day.toString()}
+      overlap="circular"
+      badgeContent={isSelected ? '🚩' : undefined}
+    >
+      <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} selected={isSelected}/>
+    </Badge>
+  );
+}
+
 
 const EventList = (): JSX.Element => {
+    const [highlightedDays, setHighlightedDays] = React.useState<number[]>([]);
+
+    const fetchHighlightedDays = (month: number) => {
+      selectedDateFetch(month)
+        .then(({ daysToHighlight }) => {
+          setHighlightedDays(daysToHighlight);
+        })
+        .catch((error) => {
+          console.log(error)
+      });
+    };
+  
+    React.useEffect(() => {
+      fetchHighlightedDays(Number(initialValue.month()) === 12 ? 1 : initialValue.month()+1);
+    }, []);
+  
+    const handleMonthChange = (date: Dayjs) => {
+      month = Number(date.toISOString().substring(5,7))+1// 해당 월을 알려줌
+      setHighlightedDays([]);
+      fetchHighlightedDays(month);
+    };
+    const [clickedVal, setClickedVal] = React.useState<Dayjs | null>(dayjs(new Date()));
+    const clickedMonth = Number(clickedVal?.toISOString().slice(5,7)); //서버에 넘거 줄 값
+    const clickedDay = Number(clickedVal?.toISOString().slice(8,10));
     return (
         <Container>
             <Body className="row-container">
@@ -13,23 +100,34 @@ const EventList = (): JSX.Element => {
                 <Wrapper>
                 <LeftWrapper>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar/>
+                <DateCalendar
+                    defaultValue={initialValue}
+                    // loading={isLoading}
+                    onMonthChange={handleMonthChange}
+                    onChange = {(value)=> setClickedVal(value)}
+                    renderLoading={() => <DayCalendarSkeleton />}
+                    slots={{
+                    day: ServerDay,
+                    }}
+                    slotProps={{
+                    day: {
+                        highlightedDays,
+                    } as any,
+                    }}
+                />
                 </LocalizationProvider>
                 </LeftWrapper>
                 <CardWrapper>
-                <h3>📍 5월 17일 일정이에요</h3>
-                <Card>
+                <h3>📍 {clickedMonth+"월"+clickedDay+"일 일정이에요"}</h3>
+                {selectedDateEvent.map((eventInfo, index) => (
+                    <Card key={eventInfo.id}>
                     <TextBox>
-                        <p>클라우드클럽 마지막 세미나</p>
-                        <DeleteDialog/>
+                        <p>{eventInfo.title}</p>
+                        <DeleteDialog id={eventInfo.id}/>
                     </TextBox>
-                </Card>
-                <Card>
-                    <TextBox>
-                        <p>모여라! 번개모임⚡️</p>
-                        <DeleteDialog/>
-                    </TextBox>
-                </Card>
+                    </Card>
+                ))}
+               
                 </CardWrapper>
                 </Wrapper>    
             </Body>
@@ -39,7 +137,7 @@ const EventList = (): JSX.Element => {
 }
 
 export default EventList;
-
+ 
 const Container = styled(Box)`
 	background-position: center bottom;
 	background-repeat: no-repeat;
@@ -67,6 +165,18 @@ justify-content: space-between;
         font-family: 'Segoe UI'
     }
 `;
+
+const EventCalendar = styled(Calendar)`
+border-radius: 10%;
+.dot {
+    height: 8px;
+    width: 8px;
+    backgroud-color: #f87171;
+    border-radius: 50%;
+    display:flex;
+    margin-left: 1px;
+}
+`
 const DeleteDialog = styled(AlertDialog)`
     float:right;
 `

@@ -5,9 +5,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function AlertDialog() {
+export default function AlertDialog({id}:{id:number})  {
 
   const [open, setOpen] = React.useState(false);
+  //TODO: 취소하기 API 호출
 
   const handleClickOpen = () => {
     setOpen(true);
