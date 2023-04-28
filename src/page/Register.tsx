@@ -131,7 +131,7 @@ const Register = () => {
               onChange={handleRemindDayChange}
             >
               {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
+                <MenuItem key={option.value || ""} value={option.value || ""}>
                   {option.label}
                 </MenuItem>
               ))}
@@ -146,7 +146,6 @@ const Register = () => {
     </>
   );
 };
-
 export default Register;
 
 const Container1 = styled(Container)`
@@ -156,14 +155,7 @@ const Container1 = styled(Container)`
   align-items: center;
   margin-top: 150px;
 `;
-const DateCalendar1 = styled(DateCalendar)`
-  width: 390px;
-  height: 495px;
-  left: 200px;
-  top: 139px;
-  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.08));
-  border-radius: 20px;
-`;
+
 const Text1 = styled(Box)`
   width: 340px;
   height: 27px;
