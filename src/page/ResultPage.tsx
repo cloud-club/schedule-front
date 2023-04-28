@@ -2,6 +2,9 @@ import React from "react";
 import { Box, Button, styled, Container } from "@mui/material";
 import result from "../asset/result.png";
 import { useNavigate } from "react-router-dom";
+import { ScheduleContent } from "./Register";
+import { title } from "process";
+import axios from 'axios';
 
 export interface ResultPageProps {
   title: string;
@@ -11,15 +14,25 @@ export interface ResultPageProps {
   remind_date: number;
 }
 const ResultPage = (props: ResultPageProps) => {
+  const {title, content, month, day, remind_date} = props;
   const navigate = useNavigate();
 
   function handleClick() {
     navigate("/register");
   }
 
-  function handleClickAlarmBtn() {
+  const getSchedule = () => {
+    console.log(month, day);
+    const retValue: ScheduleContent = {title: title, content: content, schedule_date: new Date(2023, month - 1, day), remind_date: remind_date}
+    console.log(new Date(2023, month - 1, day));
+    return retValue;
+  }
+
+  async function handleClickAlarmBtn() {
     // TODO : api call to alarm api
-    navigate("/register");
+    const requestBody = getSchedule();
+    const response = await axios.post('http://localhost:8081/slack/message', requestBody);
+    console.log(response);
   }
 
   return (

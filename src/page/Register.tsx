@@ -10,7 +10,7 @@ import axios from 'axios';
 import ResultPage from "./ResultPage";
 
 
-export interface ScheduleConetent {
+export interface ScheduleContent {
   title: string;
   content: string;
   schedule_date: Date;
@@ -45,7 +45,7 @@ const Register = () => {
 
   const getSchedule = () => {
     console.log(month, day);
-    const retValue: ScheduleConetent = {title: title, content: content, schedule_date: new Date(2023, month - 1, day), remind_date: remindDay}
+    const retValue: ScheduleContent = {title: title, content: content, schedule_date: new Date(2023, month - 1, day), remind_date: remindDay}
     console.log(new Date(2023, month - 1, day));
     return retValue;
   }
