@@ -10,9 +10,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/event" element={<EventListPage />} />
-        <Route path="/main" element={<MainPage />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/result" element={<ResultPage />} />
       </Routes>
     </Router>
   );

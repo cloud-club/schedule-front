@@ -3,33 +3,22 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AlertDialog from '../Components/AlertDialog';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
-import React from 'react';
+import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import Badge from '@mui/material/Badge';
+import axios from 'axios';
 
-const inputVal = {
-    "month" : 2,
-    "day" : 5
+export interface Schedule {
+  id: number;
+  title: string;
+  content: string;
+  schedule_date: Date;
+  remind_date: number;
+  isActive: Boolean;
 }
-const selectedDateEvent = [
-    {
-        "title": "점심식사 시작",
-        "content": "시작 입니다.",
-        "schedule_date": "2023-04-18",
-        "remind_date": 2,
-        "id": 12
-    },
-    {
-        "title": "클라우드 클럽 모임(3회차)",
-        "content": "시작 입니다.",
-        "schedule_date": "2023-04-18",
-        "remind_date": 2,
-        "id": 2
-    }
-]
 
 const scheduledDate = [
     {
@@ -69,8 +58,9 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: number[] 
 
 
 const EventList = (): JSX.Element => {
-    const [highlightedDays, setHighlightedDays] = React.useState<number[]>([]);
-
+    const [highlightedDays, setHighlightedDays] = useState<number[]>([]);
+    const [selectedDateEvent, setSelectedDateEvent] = useState<Schedule[]>([]);
+    
     const fetchHighlightedDays = (month: number) => {
       selectedDateFetch(month)
         .then(({ daysToHighlight }) => {
@@ -90,9 +80,25 @@ const EventList = (): JSX.Element => {
       setHighlightedDays([]);
       fetchHighlightedDays(month);
     };
+
+    // 사용자가 날짜를 클릭 했을 때 발생하는 이벤트
+    const handleDateChange = async (date: Dayjs | null) => {
+      if(date !== null) {
+        setClickedVal(date)
+        const month = Number(date.toISOString().substring(5,7))
+        const day = Number(date.toISOString().substring(8,10)) + 1
+        console.log(`${month}월 ${day}일`)
+
+        const response = await axios.get<Schedule[]>('http://localhost:8080/api/day', {params: {month: month, day: day}});
+        setSelectedDateEvent(response.data);
+        console.log(response.data);
+      }
+    }
+
+
     const [clickedVal, setClickedVal] = React.useState<Dayjs | null>(dayjs(new Date()));
     const clickedMonth = Number(clickedVal?.toISOString().slice(5,7)); //서버에 넘거 줄 값
-    const clickedDay = Number(clickedVal?.toISOString().slice(8,10));
+    const clickedDay = Number(clickedVal?.toISOString().slice(8,10)) + 1;
     return (
         <Container>
             <Body className="row-container">
@@ -104,7 +110,7 @@ const EventList = (): JSX.Element => {
                     defaultValue={initialValue}
                     // loading={isLoading}
                     onMonthChange={handleMonthChange}
-                    onChange = {(value)=> setClickedVal(value)}
+                    onChange = {(value)=> handleDateChange(value)}
                     renderLoading={() => <DayCalendarSkeleton />}
                     slots={{
                     day: ServerDay,

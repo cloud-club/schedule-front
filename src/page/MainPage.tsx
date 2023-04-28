@@ -1,12 +1,16 @@
 import React from "react";
 import main from "../asset/main.png";
-import { Box, Button, styled, Container } from "@mui/material";
+import { Box, Button, styled, Container, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { blue } from "@mui/material/colors";
 
 const MainPage = () => {
   const navigate = useNavigate();
-  function handleClick() {
+  function handleClickRegisterBtn() {
     navigate("/register");
+  }
+  function handleClickShowListBtn() {
+    navigate("/event");
   }
   return (
     <Container1>
@@ -15,9 +19,14 @@ const MainPage = () => {
         알림을 보내보세요 !
       </TextView>
       <img src={main}></img>
-      <Button2 variant="contained" onClick={handleClick}>
+      <Grid>
+      <Button2 variant="contained" onClick={handleClickRegisterBtn}>
         일정 등록하기
       </Button2>
+      <Button2 style={{backgroundColor: '#008000'}} onClick={handleClickShowListBtn}>
+        일정 확인하기
+      </Button2>
+      </Grid>
     </Container1>
   );
 };
@@ -53,6 +62,7 @@ const Button2 = styled(Button)`
   background: #3e88eb;
   border-radius: 100px;
   margin-top: 100px;
+  margin-right: 1em;
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;

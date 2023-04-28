@@ -3,11 +3,25 @@ import { Box, Button, styled, Container } from "@mui/material";
 import result from "../asset/result.png";
 import { useNavigate } from "react-router-dom";
 
-const ResultPage = () => {
+export interface ResultPageProps {
+  title: string;
+  content: string;
+  month: number;
+  day: number;
+  remind_date: number;
+}
+const ResultPage = (props: ResultPageProps) => {
   const navigate = useNavigate();
+
   function handleClick() {
     navigate("/register");
   }
+
+  function handleClickAlarmBtn() {
+    // TODO : api call to alarm api
+    navigate("/register");
+  }
+
   return (
     <Container1>
       <Box0>
@@ -20,22 +34,22 @@ const ResultPage = () => {
       <Box2>
         <Box21>
           <h3>일정 제목:&nbsp;&nbsp;</h3>
-          <span>안녕하세요 회의합시다</span>
+          <span>{props.title}</span>
         </Box21>
         <Box22>
           <h3>일정 날짜:&nbsp;&nbsp;</h3>
-          <span>2023.04.20 ~2023.04.21</span>
+          <span>{`${props.month}월 ${props.day}일`}</span>
         </Box22>
         <Box23>
           <h3>리마인드:&nbsp;&nbsp;</h3>
-          <span>3일 전</span>
+          <span>{`${props.remind_date}일`}</span>
         </Box23>
       </Box2>
       <Box3>
         <Button1 variant="contained" onClick={handleClick}>
           일정 추가하기
         </Button1>
-        <Button2>
+        <Button2 onClick={handleClickAlarmBtn}>
           슬랙으로
           <br />
           알람 보내기
