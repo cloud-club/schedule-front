@@ -52,7 +52,7 @@ const Register = () => {
 
   async function handleClick() {
     const requestBody = getSchedule();
-    const response = await axios.post<Schedule[]>('http://localhost:8080/api', requestBody);
+    const response = await axios.post<Schedule[]>('http://crud:8080/api', requestBody);
     console.log(response.data);
     setIsSubmit(true);
   }

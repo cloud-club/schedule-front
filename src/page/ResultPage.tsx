@@ -31,7 +31,7 @@ const ResultPage = (props: ResultPageProps) => {
   async function handleClickAlarmBtn() {
     // TODO : api call to alarm api
     const requestBody = getSchedule();
-    const response = await axios.post('http://localhost:8081/slack/message', requestBody);
+    const response = await axios.post('http://slack:8081/slack/message', requestBody);
     console.log(response);
   }
 

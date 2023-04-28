@@ -89,7 +89,7 @@ const EventList = (): JSX.Element => {
         const day = Number(date.toISOString().substring(8,10)) + 1
         console.log(`${month}월 ${day}일`)
 
-        const response = await axios.get<Schedule[]>('http://localhost:8080/api/day', {params: {month: month, day: day}});
+        const response = await axios.get<Schedule[]>('http://crud:8080/api/day', {params: {month: month, day: day}});
         setSelectedDateEvent(response.data);
         console.log(response.data);
       }
